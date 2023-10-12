@@ -1,9 +1,15 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.LocationPhotosTestTask" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.LocationPhotosTestTask" parent="Theme.Material3.Light">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+         <item name="colorPrimary">@color/green</item>
+        <item name="colorPrimaryVariant">@color/green</item>
     </style>
 
     <style name="Theme.LocationPhotosTestTask" parent="Base.Theme.LocationPhotosTestTask" />
+
+
+    <style name="CustomTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textColor">@color/white</item>
+    </style>
 </resources>

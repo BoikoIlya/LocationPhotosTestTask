@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    >
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/loginEdt"
+        android:layout_marginHorizontal="30dp"
+        android:hint="@string/login"
+        android:backgroundTint="?android:textColorHint"
+        />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/passwordEdt"
+        android:hint="@string/password"
+        android:layout_marginVertical="20dp"
+        android:layout_marginHorizontal="30dp"
+        android:inputType="textPassword"
+        android:backgroundTint="?android:textColorHint"
+        />
+
+    <ProgressBar
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:indeterminateTint="@color/green"
+        />
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/loginBtn"
+            android:layout_marginHorizontal="30dp"
+            android:text="@string/login_btn"
+            app:cornerRadius="5dp"
+            />
+
+
+
+</LinearLayout>

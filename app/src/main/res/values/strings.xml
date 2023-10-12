@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">LocationPhotosTestTask</string>
+    <string name="login">Login</string>
+    <string name="login_btn">LOG IN</string>
+    <string name="register">Register</string>
+    <string name="password">Password</string>
+    <string name="repeat_password">Repeat password</string>
+    <string name="sign_up">SIGN UP</string>
+    <string name="empty_login_message">Please enter login</string>
+    <string name="empty_password_message">Please enter password</string>
+    <string name="empty_repeated_password_message">Please repeat password</string>
+    <string name="wrong_repeated_password_message">Repeated password entered wrong </string>
+    <string name="no_connection_message">No internet connection</string>
+    <string name="oops_something_went_wrong_data">Oops, something went wrong</string>
+    <string name="wrong_credentials">Wrong login or password</string>
 </resources>

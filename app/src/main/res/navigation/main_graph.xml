@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_graph"
+    app:startDestination="@id/imagesFragment">
+    <fragment
+        android:id="@+id/authenticationFragment"
+        android:name="com.exmaple.locationphotostesttask.authentication.presentation.AuthenticationFragment"
+        android:label="AuthenticationFragment" >
+        <action
+            app:popUpTo="@id/authenticationFragment"
+            app:popUpToInclusive="true"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            android:id="@+id/action_authenticationFragment_to_imagesFragment"
+            app:destination="@id/imagesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/imagesFragment"
+        android:name="com.exmaple.locationphotostesttask.images.presentation.ImagesFragment"
+        android:label="ImagesFragment" >
+        <action
+            app:popUpTo="@id/imagesFragment"
+            app:popUpToInclusive="true"
+            android:id="@+id/action_imagesFragment_to_authenticationFragment"
+            app:destination="@id/authenticationFragment" />
+    </fragment>
+</navigation>
