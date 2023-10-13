@@ -18,15 +18,8 @@ data class AuthResponse(
  private val error: String
 ){
 
-// init {
-//
-// }
-//
-// fun checkForError() {
-//  if(error!=null) return
-// }
 
- suspend fun saveToken(data: TokenStore) = data.save(this.data!!.token)
+ suspend fun saveToken(data: TokenStore) = data.save(this.data.token)
 
 
 }

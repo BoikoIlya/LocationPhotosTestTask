@@ -1,9 +1,12 @@
 package com.exmaple.locationphotostesttask.authentication.presentation
 
+import android.content.Context
+import android.content.Intent
 import android.view.View
 import android.widget.ProgressBar
 import androidx.navigation.NavController
 import com.exmaple.locationphotostesttask.R
+import com.exmaple.locationphotostesttask.main.presentation.MainActivity
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 
@@ -14,7 +17,7 @@ on 12.10.2023.
 sealed interface AuthenticationUiState {
 
  fun apply(
-  navController: NavController,
+  context: Context,
   button: MaterialButton,
   progressBar: ProgressBar,
   vararg editTexts: TextInputEditText,
@@ -22,7 +25,7 @@ sealed interface AuthenticationUiState {
 
  object Loading: AuthenticationUiState {
   override fun apply(
-   navController: NavController,
+   context: Context,
    button: MaterialButton,
    progressBar: ProgressBar,
    vararg editTexts: TextInputEditText,
@@ -35,19 +38,21 @@ sealed interface AuthenticationUiState {
 
  object Success: AuthenticationUiState {
   override fun apply(
-   navController: NavController,
+   context: Context,
    button: MaterialButton,
    progressBar: ProgressBar,
    vararg editTexts: TextInputEditText,
   ) {
    progressBar.visibility = View.GONE
-   navController.navigate(R.id.action_authenticationFragment_to_imagesFragment)
+   context.startActivity(Intent(context,MainActivity::class.java).apply {
+    flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+   })
   }
  }
 
   object Failure : AuthenticationUiState {
    override fun apply(
-    navController: NavController,
+    context: Context,
     button: MaterialButton,
     progressBar: ProgressBar,
     vararg editTexts: TextInputEditText,
@@ -60,7 +65,7 @@ sealed interface AuthenticationUiState {
 
  object Empty: AuthenticationUiState {
   override fun apply(
-   navController: NavController,
+   context: Context,
    button: MaterialButton,
    progressBar: ProgressBar,
    vararg editTexts: TextInputEditText,

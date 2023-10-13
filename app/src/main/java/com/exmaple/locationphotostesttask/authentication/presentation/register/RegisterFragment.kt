@@ -8,7 +8,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.exmaple.locationphotostesttask.R
-import com.exmaple.locationphotostesttask.databinding.AuthenticationFragmentBinding
 import com.exmaple.locationphotostesttask.databinding.RegisterFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.HiltAndroidApp
@@ -31,7 +30,7 @@ class RegisterFragment: Fragment(R.layout.register_fragment) {
         lifecycleScope.launch {
             viewModel.collectRegisterStateCommunication(this@RegisterFragment){
                 it.apply(
-                    findNavController(),
+                    requireContext(),
                     binding.signUpBtn,
                     binding.progressBar,
                     binding.loginEdt,

@@ -7,5 +7,5 @@ import com.exmaple.locationphotostesttask.R
 * Created by Ilya Boiko @camancho
  on 12.10.2023.
 **/
-class ImagesFragment: Fragment(R.layout.images_fragment) {
+class PhotosFragment: Fragment(R.layout.photos_fragment) {
 }

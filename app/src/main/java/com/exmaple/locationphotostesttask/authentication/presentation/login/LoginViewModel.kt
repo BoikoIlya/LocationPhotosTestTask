@@ -25,14 +25,6 @@ class LoginViewModel @Inject constructor(
  private val interactor: LoginInteractor
 ) : AuthenticationViewModel(loginStateCommunication) {
 
-    @Inject
-    lateinit var tokenStore: TokenStore
-
-    init {
-        viewModelScope.launch {
-            Log.d("tag", "onViewCreated: ${tokenStore.read().first()}")
-        }
-    }
 
   fun login(
       login: String,

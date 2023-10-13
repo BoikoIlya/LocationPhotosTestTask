@@ -36,7 +36,7 @@ class LoginFragment: Fragment(R.layout.login_fragment) {
         lifecycleScope.launch {
             viewModel.collectRegisterStateCommunication(this@LoginFragment){
                 it.apply(
-                    findNavController(),
+                    requireContext(),
                     binding.loginBtn,
                     binding.progressBar,
                     binding.loginEdt,

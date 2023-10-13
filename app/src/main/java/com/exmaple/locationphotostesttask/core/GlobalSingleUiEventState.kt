@@ -1,10 +1,13 @@
 package com.exmaple.locationphotostesttask.core
 
 import android.content.Context
+import android.os.IBinder
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.FragmentManager
 import com.exmaple.locationphotostesttask.R
 import com.exmaple.locationphotostesttask.databinding.ActivityMainBinding
@@ -18,9 +21,8 @@ sealed interface GloabalSingleUiEventState{
 
 
  fun apply(
-  fragmentManager: FragmentManager,
   context: Context,
-  binding: ActivityMainBinding,
+  targetView: View
  )
 
 
@@ -30,16 +32,15 @@ sealed interface GloabalSingleUiEventState{
  ): GloabalSingleUiEventState {
 
   override fun apply(
-   fragmentManager: FragmentManager,
    context: Context,
-   binding: ActivityMainBinding,
-  ) = with(binding) {
+   targetView: View
+  ) {
 
    val imm =
     context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-   imm.hideSoftInputFromWindow(binding.root.windowToken, 0)
+   imm.hideSoftInputFromWindow(targetView.windowToken, 0)
 
-   val snackBar = Snackbar.make(fragmentContainer, message, 5000)
+   val snackBar = Snackbar.make(targetView, message, 5000)
    val snackBarView: View = snackBar.view
    snackBarView.background =
     AppCompatResources.getDrawable(context, R.drawable.snack_bar_rounded_corners)
@@ -67,10 +68,9 @@ sealed interface GloabalSingleUiEventState{
  ) : GloabalSingleUiEventState{
 
   override fun apply(
-   fragmentManager: FragmentManager,
    context: Context,
-   binding: ActivityMainBinding,
-  ) = dialog.show(fragmentManager, dialog.tag)
+   targetView: View
+  ) = dialog.show((context as AppCompatActivity).supportFragmentManager, dialog.tag)
 
  }
 
