@@ -1,12 +1,9 @@
 package com.exmaple.locationphotostesttask.authentication.presentation
 
 import com.exmaple.locationphotostesttask.authentication.domain.AuthenticationState
-import com.exmaple.locationphotostesttask.authentication.presentation.login.LoginStateCommunication
-import com.exmaple.locationphotostesttask.authentication.presentation.register.RegisterStateCommunication
 import com.exmaple.locationphotostesttask.core.Communication
-import com.exmaple.locationphotostesttask.core.GloabalSingleUiEventState
+import com.exmaple.locationphotostesttask.core.GlobalSingleUiEventState
 import com.exmaple.locationphotostesttask.core.GlobalSingleUiEventStateCommunication
-import javax.inject.Inject
 
 /**
  * Created by Ilya Boiko @camancho
@@ -24,7 +21,7 @@ abstract class AuthenticationMapper(
     override suspend fun map(state: AuthenticationState.Failure, message: String) {
         registerStateCommunication.map(AuthenticationUiState.Failure)
         globalSingleUiEventStateCommunication.map(
-            GloabalSingleUiEventState.ShowSnackBar.Error(message)
+            GlobalSingleUiEventState.ShowSnackBar.Error(message)
         )
     }
 

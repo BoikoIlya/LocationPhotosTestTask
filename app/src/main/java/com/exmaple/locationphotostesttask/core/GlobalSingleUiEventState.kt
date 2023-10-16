@@ -1,23 +1,19 @@
 package com.exmaple.locationphotostesttask.core
 
 import android.content.Context
-import android.os.IBinder
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentContainerView
-import androidx.fragment.app.FragmentManager
 import com.exmaple.locationphotostesttask.R
-import com.exmaple.locationphotostesttask.databinding.ActivityMainBinding
 import com.google.android.material.snackbar.Snackbar
 
 /**
  * Created by Ilya Boiko @camancho
 on 12.10.2023.
  **/
-sealed interface GloabalSingleUiEventState{
+sealed interface GlobalSingleUiEventState{
 
 
  fun apply(
@@ -29,7 +25,7 @@ sealed interface GloabalSingleUiEventState{
  abstract class ShowSnackBar(
   private val message: String,
   private val bgColorId: Int,
- ): GloabalSingleUiEventState {
+ ): GlobalSingleUiEventState {
 
   override fun apply(
    context: Context,
@@ -58,6 +54,8 @@ sealed interface GloabalSingleUiEventState{
   data class Success(
    private val message: String,
   ) : ShowSnackBar(message, R.color.snack_bar_green)
+
+
  }
 
 
@@ -65,7 +63,7 @@ sealed interface GloabalSingleUiEventState{
 
  data class ShowDialog(
   private val dialog: DialogFragment,
- ) : GloabalSingleUiEventState{
+ ) : GlobalSingleUiEventState{
 
   override fun apply(
    context: Context,

@@ -6,8 +6,8 @@ import javax.inject.Inject
  * Created by Ilya Boiko @camancho
 on 12.10.2023.
  **/
-interface GlobalSingleUiEventStateCommunication: Communication.MutableSingle<GloabalSingleUiEventState> {
+interface GlobalSingleUiEventStateCommunication: Communication.MutableSingle<GlobalSingleUiEventState> {
 
     class Base @Inject constructor(): GlobalSingleUiEventStateCommunication,
-        Communication.SingleUiUpdate<GloabalSingleUiEventState>()
+        Communication.SingleUiUpdate<GlobalSingleUiEventState>()
 }

@@ -2,9 +2,8 @@ package com.exmaple.locationphotostesttask.authentication.presentation
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
-import com.exmaple.locationphotostesttask.core.GloabalSingleUiEventState
+import com.exmaple.locationphotostesttask.core.GlobalSingleUiEventState
 import com.exmaple.locationphotostesttask.core.GlobalSingleUiEventStateCommunication
-import com.exmaple.locationphotostesttask.main.presentation.AuthState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.FlowCollector
 import javax.inject.Inject
@@ -20,6 +19,6 @@ class MainAuthenticationViewModel @Inject constructor(
 
  suspend fun collectGlobalSingleUiEventStateCommunication(
   lifecycleOwner: LifecycleOwner,
-  flowCollector: FlowCollector<GloabalSingleUiEventState>
+  flowCollector: FlowCollector<GlobalSingleUiEventState>
  ) = globalSingleUiEventStateCommunication.collect(lifecycleOwner,flowCollector)
 }

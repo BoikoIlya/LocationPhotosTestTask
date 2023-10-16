@@ -13,4 +13,23 @@
     <string name="no_connection_message">No internet connection</string>
     <string name="oops_something_went_wrong_data">Oops, something went wrong</string>
     <string name="wrong_credentials">Wrong login or password</string>
+    <string name="existed_login">Login already use</string>
+    <string name="bad_image">Bad image</string>
+    <string name="big_image">Too big image</string>
+    <string name="file_upload_error">File upload error</string>
+    <string name="photos">Photos</string>
+    <string name="map">Map</string>
+    <string name="no_photos">No photos</string>
+    <string name="close">Close</string>
+    <string name="open_settings">Open settings</string>
+    <string name="post_photo_again">Post photo again</string>
+    <string name="enable_gps_and_network_post_again">Please enable GPS and check internet connection, wait 10–20 sec to give gps time if it was disabled, then post photo again</string>
+    <string name="enable_gps_and_internet">Please enable GPS and internet</string>
+    <string name="photo_posted">Photo successfully posted</string>
+    <string name="photo_deleted">Photo deleted successfully</string>
+    <string name="location_perm_dialog">Please give location precise permission to make app able show points on the map where pictures were taken.</string>
+    <string name="posting">Posting…</string>
+    <string name="delete_dialog">Are you sure that you want to delete this photo?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

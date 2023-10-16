@@ -9,6 +9,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStoreFile
+import androidx.room.Room
 import com.exmaple.locationphotostesttask.authentication.data.cache.TokenStore
 import com.exmaple.locationphotostesttask.authentication.di.AuthenticationModuleProvides
 import com.exmaple.locationphotostesttask.core.DispatchersList
@@ -16,9 +17,12 @@ import com.exmaple.locationphotostesttask.core.GlobalSingleUiEventStateCommunica
 import com.exmaple.locationphotostesttask.core.HandleError
 import com.exmaple.locationphotostesttask.core.HandleResponse
 import com.exmaple.locationphotostesttask.core.HandleResponseData
+import com.exmaple.locationphotostesttask.core.ImageLoader
+import com.exmaple.locationphotostesttask.core.LocationPhotosDB
 import com.exmaple.locationphotostesttask.core.ManagerResource
 import com.exmaple.locationphotostesttask.main.data.AuthorizationRepository
 import com.exmaple.locationphotostesttask.main.presentation.AuthStateCommunication
+import com.exmaple.locationphotostesttask.main.presentation.GlobalLoadingCommunication
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -47,6 +51,7 @@ class AppModuleProvides {
   private const val data_store_name: String = "data_store"
   const val baseUrl = "https://junior.balinasoft.com"
   private const val token_key: String ="token_key"
+  private const val db_name: String ="location_photos_db"
  }
 
  @Singleton
@@ -103,6 +108,16 @@ class AppModuleProvides {
   return TokenStore.Base(stringPreferencesKey(token_key), dataStore)
  }
 
+ @Singleton
+ @Provides
+ fun provideDB(@ApplicationContext context: Context): LocationPhotosDB {
+  return Room.databaseBuilder(
+         context,
+         LocationPhotosDB::class.java,
+         db_name
+        ).build()
+ }
+
 }
 
 @Module
@@ -112,6 +127,10 @@ interface AppModule{
  @Binds
  @Singleton
  fun bindAuthorizationRepository(obj: AuthorizationRepository.Base): AuthorizationRepository
+
+ @Binds
+ @Singleton
+ fun bindImageLoader(obj: ImageLoader.Base): ImageLoader
 
  @Binds
  @Singleton
@@ -136,4 +155,8 @@ interface AppModule{
  @Binds
  @Singleton
  fun bindGlobalSingleUiEventStateCommunication(obj: GlobalSingleUiEventStateCommunication.Base): GlobalSingleUiEventStateCommunication
+
+ @Binds
+ @Singleton
+ fun bindGlobalLoadingCommunication(obj: GlobalLoadingCommunication.Base): GlobalLoadingCommunication
 }

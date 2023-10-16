@@ -1,6 +1,5 @@
 package com.exmaple.locationphotostesttask.core
 
-import android.os.Message
 import com.exmaple.locationphotostesttask.R
 
 /**
@@ -14,14 +13,24 @@ class CloudErrorWithoutFullDescriptionException(override val message: String)
 
     companion object{
         private const val wrong_credentials = "security.signin.incorrect"
+        private const val existed_login = "security.signup.login-already-use"
+        private const val bad_image = "bad-image"
+        private const val big_image = "big-image"
+        private const val file_upload_error = "file-upload-error"
     }
 
     override fun map(data: Unit): Int {
        return when(message){
             wrong_credentials -> R.string.wrong_credentials
+            existed_login->R.string.existed_login
+            bad_image->R.string.bad_image
+            big_image->R.string.big_image
+            file_upload_error->R.string.file_upload_error
             else -> R.string.oops_something_went_wrong_data
         }
     }
 
 
 }
+
+class EnableGpsAndNetworkException: Exception()

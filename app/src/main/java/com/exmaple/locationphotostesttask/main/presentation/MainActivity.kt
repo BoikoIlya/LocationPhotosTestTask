@@ -1,22 +1,22 @@
 package com.exmaple.locationphotostesttask.main.presentation
 
-import android.content.res.ColorStateList
+import android.content.pm.PackageManager
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.exmaple.locationphotostesttask.R
+import com.exmaple.locationphotostesttask.core.GlobalSingleUiEventState
 import com.exmaple.locationphotostesttask.databinding.ActivityMainBinding
+import com.exmaple.locationphotostesttask.photos.presentation.PhotosFragment.Companion.REQUEST_CODE
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.navigationView.setupWithNavController(navController)
         setupActionBarWithNavController(navController, appBarConfiguration)
+
         lifecycleScope.launch {
             viewModel.collectAuthStateCommunication(this@MainActivity){
                 it.apply(navController,viewModel,this@MainActivity)
@@ -56,9 +57,32 @@ class MainActivity : AppCompatActivity() {
                 it.apply(this@MainActivity, binding.root)
             }
         }
+
+        lifecycleScope.launch {
+            viewModel.collectGlobalLoadingCommunication(this@MainActivity){
+                it.apply(this@MainActivity)
+            }
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if(
+            requestCode==REQUEST_CODE &&
+            grantResults.isNotEmpty() &&
+            grantResults.first() == PackageManager.PERMISSION_DENIED
+            )
+            viewModel.sendGlobalSingleStateEvent(
+                GlobalSingleUiEventState.ShowDialog(LocationPermissionDialog()))
+
+
     }
 }
