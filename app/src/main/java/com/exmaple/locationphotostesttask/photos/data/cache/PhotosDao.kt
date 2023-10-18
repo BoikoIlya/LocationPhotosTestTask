@@ -1,10 +1,10 @@
 package com.exmaple.locationphotostesttask.photos.data.cache
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 
 /**
  * Created by Ilya Boiko @camancho
@@ -22,12 +22,21 @@ interface PhotosDao {
             "LIMIT :pageSize OFFSET :offset")
     suspend fun fetchPhotos(offset:Int, pageSize: Int):List<PhotoCache>
 
+    @Query("SELECT * FROM photos_table " +
+            "ORDER BY date DESC")
+    suspend fun fetchAllPhotos():List<PhotoCache>
+
+
+    @Query("SELECT * FROM photos_table WHERE id = :id")
+    suspend fun fetchPhotoById(id: Int): PhotoCache
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPhotos(list: List<PhotoCache>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPhoto(item: PhotoCache)
 
+    @Transaction
     @Query("DELETE FROM photos_table WHERE id = :id")
     suspend fun deletePhoto(id: Int)
 }

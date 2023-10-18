@@ -9,6 +9,7 @@ import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.exmaple.locationphotostesttask.R
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -32,7 +33,7 @@ class EnableGpsAndRetryFragment: DialogFragment() {
      viewModel.postPhoto(true,uri)
     }
    }
-   val dialog = AlertDialog.Builder(requireContext())
+   val dialog = MaterialAlertDialogBuilder(requireContext())
     .setMessage(R.string.enable_gps_and_network_post_again)
     .setPositiveButton(R.string.post_photo_again, listener)
     .setNegativeButton(R.string.close, listener)

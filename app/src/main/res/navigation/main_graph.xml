@@ -8,10 +8,26 @@
     <fragment
         android:id="@+id/photosFragment"
         android:name="com.exmaple.locationphotostesttask.photos.presentation.PhotosFragment"
-         />
+         >
+        <action
+            android:id="@+id/action_photosFragment_to_photoDetails"
+            app:destination="@id/photoDetails" />
+    </fragment>
 
     <fragment
         android:id="@+id/mapFragment"
         android:name="com.exmaple.locationphotostesttask.map.presentation.MapFragment"
-        />
+        >
+        <action
+            android:id="@+id/action_mapFragment_to_photoDetails"
+            app:destination="@id/photoDetails" />
+    </fragment>
+    <fragment
+        android:id="@+id/photoDetails"
+        android:name="com.exmaple.locationphotostesttask.photodetails.presentation.PhotoDetailsFragment"
+        android:label="" >
+        <argument
+            android:name="photoId"
+            app:argType="integer" />
+    </fragment>
 </navigation>

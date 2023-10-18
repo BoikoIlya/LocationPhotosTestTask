@@ -17,14 +17,14 @@ on 14.10.2023.
 class PhotosToUiMapper @Inject constructor(
      private val photosListCommunication: PhotosListCommunication,
      private val photosStateCommunication: PhotosLoadStateCommunication,
-     private val dateTimeParser: DateTimeParser,
+     private val mapper: PhotoDomain.Mapper<PhotoUi>,
      private val globalSingleUiEventStateCommunication: GlobalSingleUiEventStateCommunication,
      private val globalLoadingCommunication: GlobalLoadingCommunication
 ): PhotoDomainState.Mapper {
 
  override suspend fun map(state: PhotoDomainState.Success, photos: List<PhotoDomain>) {
-   photosListCommunication.map(photos.map { it.map(dateTimeParser) })
-   photosStateCommunication.map(PagingLoadStateState.Hide)
+   photosListCommunication.map(photos.map { it.map(mapper) })
+   photosStateCommunication.map(PagingLoadState.Hide)
  }
 
     override suspend fun map(
@@ -32,13 +32,13 @@ class PhotosToUiMapper @Inject constructor(
         photos: List<PhotoDomain>,
         message: String
     ) {
-        photosListCommunication.map(photos.map { it.map(dateTimeParser) })
+        photosListCommunication.map(photos.map { it.map(mapper) })
         globalSingleUiEventStateCommunication.map(GlobalSingleUiEventState.ShowSnackBar.Success(message))
         globalLoadingCommunication.map(GlobalLoadingState.Dismiss)
     }
 
     override suspend fun map(state: PhotoDomainState.Failure, message: String) {
-        photosStateCommunication.map(PagingLoadStateState.Failure(message))
+        photosStateCommunication.map(PagingLoadState.Failure(message))
         globalLoadingCommunication.map(GlobalLoadingState.Dismiss)
  }
 

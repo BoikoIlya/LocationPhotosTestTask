@@ -6,33 +6,33 @@ import com.exmaple.locationphotostesttask.core.PagingListener
  * Created by Ilya Boiko @camancho
 on 14.10.2023.
  **/
-sealed interface PagingLoadStateState {
+sealed interface PagingLoadState {
 
     fun apply(loadStateAdapter: LoadStateAdapter,pagingLister: PagingListener)
 
-    object Loading: PagingLoadStateState {
+    object Loading: PagingLoadState {
         override fun apply(loadStateAdapter: LoadStateAdapter,pagingLister: PagingListener) {
             loadStateAdapter.showState(listOf(""))
-            pagingLister.setLoading(true)
+            pagingLister.setIsLoading(true)
         }
     }
 
-    object Hide: PagingLoadStateState {
+    object Hide: PagingLoadState {
         override fun apply(loadStateAdapter: LoadStateAdapter,pagingLister: PagingListener) {
             loadStateAdapter.showState(emptyList())
-            pagingLister.setLoading(false)
+            pagingLister.setIsLoading(false)
         }
     }
 
     data class Failure(
         private val message: String
-    ): PagingLoadStateState {
+    ): PagingLoadState {
         override fun apply(loadStateAdapter: LoadStateAdapter,pagingLister: PagingListener) {
             loadStateAdapter.showState(listOf(message))
         }
     }
 
-    object Empty: PagingLoadStateState {
+    object Empty: PagingLoadState {
         override fun apply(loadStateAdapter: LoadStateAdapter,pagingLister: PagingListener) = Unit
     }
 

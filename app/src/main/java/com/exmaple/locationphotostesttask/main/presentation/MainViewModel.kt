@@ -1,5 +1,6 @@
 package com.exmaple.locationphotostesttask.main.presentation
 
+import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,6 +10,7 @@ import com.exmaple.locationphotostesttask.core.GlobalSingleUiEventStateCommunica
 import com.exmaple.locationphotostesttask.main.data.AuthorizationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.FlowCollector
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,8 +32,11 @@ class MainViewModel @Inject constructor(
  }
 
  fun checkAuthentication() = viewModelScope.launch(dispatchersList.io()){
-  if(!authorizationRepository.isAuthorized())
-   authStateCommunication.map(AuthState.NavigateToAuthScreen)
+  authorizationRepository.isAuthorized().collectLatest {
+   Log.d("tag", "checkAuthentication: $it")
+   if(!it) authStateCommunication.map(AuthState.NavigateToAuthScreen)
+  }
+
  }
 
  fun resetAuthState() = authStateCommunication.map(AuthState.Empty)
@@ -39,6 +44,11 @@ class MainViewModel @Inject constructor(
  fun sendGlobalSingleStateEvent(state: GlobalSingleUiEventState)
  = viewModelScope.launch(dispatchersList.io()) {
    globalSingleUiEventStateCommunication.map(state)
+ }
+
+ fun logout() = viewModelScope.launch(dispatchersList.io()) {
+  Log.d("tag", "logout: ")
+  authorizationRepository.logout()
  }
 
  suspend fun collectGlobalSingleUiEventStateCommunication(

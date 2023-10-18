@@ -1,5 +1,6 @@
 package com.exmaple.locationphotostesttask.core
 
+import android.util.Log
 import android.widget.AbsListView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -8,45 +9,108 @@ import androidx.recyclerview.widget.RecyclerView
  * Created by Ilya Boiko @camancho
 on 14.10.2023.
  **/
-class PagingListener(
- private val pageSize: Int,
- private val triggerCount: Int,
- private val loadPage:()->Unit,
-): RecyclerView.OnScrollListener(){
 
- private var isLoading = false
- private var isLastPage = false
- private var isScrolling = false
 
- fun setLoading(isLoading: Boolean) {
+
+abstract class PagingListener: RecyclerView.OnScrollListener() {
+
+ protected var isLoading = false
+ protected var isScrolling = false
+
+
+ fun setIsLoading(isLoading: Boolean) {
   this.isLoading = isLoading
  }
 
- override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-  super.onScrolled(recyclerView, dx, dy)
+
+ class Base(
+  private val pageSize: Int,
+  private val triggerCount: Int,
+  private val loadPage: () -> Unit,
+ ) : PagingListener() {
 
 
-  val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-  val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
-  val visibleItemCount = layoutManager.childCount
-  val totalItemCount = layoutManager.itemCount
+  override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+   super.onScrolled(recyclerView, dx, dy)
 
-  val isNotLoadingAndNotLastPage = !isLoading && !isLastPage
-  val isAtLastItem = firstVisibleItemPosition + visibleItemCount >= (totalItemCount-triggerCount)
-  val isNotAtTheBeginning = firstVisibleItemPosition >= 0
-  val isTotalMoreThanVisible = totalItemCount >= pageSize
 
-  val shouldPaginate = isNotLoadingAndNotLastPage && isAtLastItem && isNotAtTheBeginning
-          && isTotalMoreThanVisible && isScrolling
+   val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+   val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+   val visibleItemCount = layoutManager.childCount
+   val totalItemCount = layoutManager.itemCount
 
-  if(shouldPaginate){
-   loadPage.invoke()
-   isScrolling = false
+   val isNotLoading = !isLoading
+   val isAtLastItem = firstVisibleItemPosition + visibleItemCount >= (totalItemCount - triggerCount)
+   val isNotAtTheBeginning = firstVisibleItemPosition >= 0
+   val isTotalMoreThanVisible = totalItemCount >= pageSize
+
+   val shouldPaginate = isNotLoading && isAtLastItem && isNotAtTheBeginning
+           && isTotalMoreThanVisible && isScrolling
+
+   if (shouldPaginate) {
+    loadPage.invoke()
+    isScrolling = false
+   }
+
+
+  }
+
+  override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+   super.onScrollStateChanged(recyclerView, newState)
+
+   isScrolling = newState != AbsListView.OnScrollListener.SCROLL_STATE_IDLE
+   if (newState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
+    val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+    val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+    val visibleItemCount = layoutManager.childCount
+    val totalItemCount = layoutManager.itemCount
+
+    val isNotLoadingAndNotLastPage = !isLoading
+    val isAtLastItem = firstVisibleItemPosition + visibleItemCount >= (totalItemCount - triggerCount)
+    val isNotAtTheBeginning = firstVisibleItemPosition >= 0
+    val isTotalMoreThanVisible = totalItemCount >= pageSize
+
+    val shouldPaginate = isNotLoadingAndNotLastPage && isAtLastItem && isNotAtTheBeginning
+            && isTotalMoreThanVisible
+
+    if (shouldPaginate) {
+     loadPage.invoke()
+     isScrolling = false
+    }
+   }
   }
 
 
-
  }
+
+
+ class PagingListenerComments(
+  private val pageSize: Int,
+  private val triggerCount: Int,
+  private val loadPage: () -> Unit,
+ ) : PagingListener() {
+
+
+  override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+   super.onScrolled(recyclerView, dx, dy)
+
+   val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+   val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+   val totalItemCount = layoutManager.itemCount
+
+   val isNotLoading = !isLoading
+   val isAtFirstItem = firstVisibleItemPosition==0
+   val isNotScrollDown = dy<=0
+   val isTotalMoreThanVisible = totalItemCount >= pageSize
+
+   val shouldPaginate = isNotLoading && isAtFirstItem && isNotScrollDown
+           && isTotalMoreThanVisible && isScrolling
+
+   if (shouldPaginate) {
+    loadPage.invoke()
+    isScrolling = false
+   }
+  }
 
  override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
   super.onScrollStateChanged(recyclerView, newState)
@@ -55,15 +119,14 @@ class PagingListener(
   if(newState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
    val layoutManager = recyclerView.layoutManager as LinearLayoutManager
    val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
-   val visibleItemCount = layoutManager.childCount
    val totalItemCount = layoutManager.itemCount
 
-   val isNotLoadingAndNotLastPage = !isLoading && !isLastPage
-   val isAtLastItem = firstVisibleItemPosition + visibleItemCount >= (totalItemCount-15)
-   val isNotAtTheBeginning = firstVisibleItemPosition >= 0
+   val isNotLoading = !isLoading
+   val isAtFirstItem = firstVisibleItemPosition==0
+
    val isTotalMoreThanVisible = totalItemCount >= pageSize
 
-   val shouldPaginate = isNotLoadingAndNotLastPage && isAtLastItem && isNotAtTheBeginning
+   val shouldPaginate = isNotLoading && isAtFirstItem
            && isTotalMoreThanVisible
 
    if(shouldPaginate){
@@ -74,4 +137,5 @@ class PagingListener(
  }
 
 
+ }
 }

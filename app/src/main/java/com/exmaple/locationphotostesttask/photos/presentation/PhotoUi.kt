@@ -43,6 +43,7 @@ data class PhotoUi(
   private val binding: PhotoItemBinding,
   private val imageLoader: ImageLoader,
   private val onLongClick:(Int)->Unit,
+  private val onClick:(Int)->Unit,
  ): Mapper<Unit> {
 
   override fun map(
@@ -55,6 +56,7 @@ data class PhotoUi(
   ) = with(binding) {
     imageLoader.loadImage(imageView,photoUrl)
     dataTv.text = date
+   root.setOnClickListener { onClick.invoke(id) }
     root.setOnLongClickListener {
      onLongClick.invoke(id)
     true

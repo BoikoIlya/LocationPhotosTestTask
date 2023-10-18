@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.GridLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -22,6 +23,7 @@ import com.exmaple.locationphotostesttask.core.ImageLoader
 import com.exmaple.locationphotostesttask.core.PagingListener
 import com.exmaple.locationphotostesttask.core.PagingSource
 import com.exmaple.locationphotostesttask.databinding.PhotosFragmentBinding
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -32,29 +34,21 @@ import javax.inject.Inject
 on 13.10.2023.
  **/
 @AndroidEntryPoint
-class PhotosFragment: Fragment(R.layout.photos_fragment) {
+class PhotosFragment: BaseTakePhotoFragment(R.layout.photos_fragment) {
 
     private val binding by viewBinding(PhotosFragmentBinding::bind)
-
 
     @Inject
     lateinit var imageLoader: ImageLoader
 
-    private val viewModel: PhotosViewModel by activityViewModels()
-
-    private var photoUri: Uri? = null
-
-    private val resultLauncher = registerForActivityResult(
-        ActivityResultContracts.TakePicture(),
-    ){result->
-        viewModel.postPhoto(result, photoUri)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val photosAdapter = PhotosAdapter(imageLoader,{
-
+        val photosAdapter = PhotosAdapter(imageLoader,{id->
+            val bundle = Bundle()
+            bundle.putInt(photo_id_key,id)
+            findNavController().navigate(R.id.action_photosFragment_to_photoDetails,bundle)
         },{id-> viewModel.launchDeletePhotoDialog(id) })
 
         val loadStateAdapter = LoadStateAdapter{
@@ -67,7 +61,7 @@ class PhotosFragment: Fragment(R.layout.photos_fragment) {
         binding.photosRecycler.layoutManager = layoutManager
         binding.photosRecycler.adapter = concatAdapter
 
-        val pagingLister = PagingListener(PagingSource.PhotosPagingSource.pageSize,0){
+        val pagingLister = PagingListener.Base(PagingSource.PhotosPagingSource.pageSize,0){
             viewModel.loadNewPage()
         }
         binding.photosRecycler.addOnScrollListener(pagingLister)
@@ -79,7 +73,7 @@ class PhotosFragment: Fragment(R.layout.photos_fragment) {
             }
 
         lifecycleScope.launch {
-            viewModel.collectPhotosListCommunication(this@PhotosFragment){
+            viewModel.collectDataListCommunication(this@PhotosFragment){
                 val state = layoutManager.onSaveInstanceState()
                 photosAdapter.setList(it)
                 layoutManager.onRestoreInstanceState(state)
@@ -87,40 +81,17 @@ class PhotosFragment: Fragment(R.layout.photos_fragment) {
         }
 
         lifecycleScope.launch {
-            viewModel.collectPhotosStateCommunication(this@PhotosFragment){
+            viewModel.collectLoadStateCommunication(this@PhotosFragment){
                 it.apply(loadStateAdapter,pagingLister)
-            }
-        }
-
-        binding.openCameraFab.setOnClickListener {
-            if(ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED){
-
-                viewModel.checkConnectionAndGps {
-
-                    val values = ContentValues()
-                    values.put(MediaStore.Images.Media.TITLE, System.currentTimeMillis())
-                    values.put(
-                        MediaStore.Images.Media.ORIENTATION,
-                        ExifInterface.ORIENTATION_UNDEFINED
-                    )
-                    photoUri = requireContext().contentResolver.insert(
-                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                        values
-                    )
-
-                    resultLauncher.launch(photoUri)
-
-                }
-            }else{
-                ActivityCompat.requestPermissions(requireActivity(),
-                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),REQUEST_CODE)
             }
         }
     }
 
+    override fun getOpenCameraFab(): FloatingActionButton = binding.openCameraFab
+
     companion object{
-         const val REQUEST_CODE = 1
+         const val request_code = 1
+        const val photo_id_key: String = "photoId"
     }
 
 }

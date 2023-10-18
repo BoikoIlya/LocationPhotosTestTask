@@ -1,12 +1,15 @@
 package com.exmaple.locationphotostesttask.core
 
 import android.content.Context
+import android.view.Gravity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.DialogFragment
 import com.exmaple.locationphotostesttask.R
+import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 
 /**
@@ -44,6 +47,9 @@ sealed interface GlobalSingleUiEventState{
     .setBackgroundTint(context.getColor(bgColorId))
     .setTextColor(context.getColor(R.color.white))
     .show()
+
+
+
   }
 
 

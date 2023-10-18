@@ -14,7 +14,7 @@ interface CloudPhotosDataSource {
 
  suspend fun loadData(pageIndex: Int):PhotosResponse
 
- suspend fun postPhoto(body: ImageDtoIn):PhotoPostResponseWrapper
+ suspend fun postPhoto(photoBase64: String, location: Pair<Double, Double>):PhotoPostResponseWrapper
 
  suspend fun deletePhoto(id: Int)
 
@@ -25,13 +25,17 @@ interface CloudPhotosDataSource {
  ): CloudPhotosDataSource {
 
   override suspend fun loadData(pageIndex: Int): PhotosResponse = handleResponseData.handle {
-   return@handle service.fetchPhotos(tokenStore.read().first(),pageIndex)
+    service.fetchPhotos(tokenStore.read().first(),pageIndex)
   }
 
   override suspend fun postPhoto(
-   body: ImageDtoIn
+   photoBase64: String,
+   location: Pair<Double, Double>
   ): PhotoPostResponseWrapper = handleResponseData.handle {
-     return@handle service.postPhoto(tokenStore.read().first(),body)
+      service.postPhoto(
+      tokenStore.read().first(),
+      ImageDtoIn(photoBase64, System.currentTimeMillis()/1000, location.first, location.second)
+     )
   }
 
   override suspend fun deletePhoto(id: Int) {

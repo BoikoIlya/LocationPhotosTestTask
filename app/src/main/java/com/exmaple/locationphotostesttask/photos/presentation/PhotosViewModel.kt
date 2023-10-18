@@ -1,7 +1,6 @@
 package com.exmaple.locationphotostesttask.photos.presentation
 
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -35,14 +34,14 @@ class PhotosViewModel @Inject constructor(
  private val managerResource: ManagerResource,
  private val globalLoadingCommunication: GlobalLoadingCommunication,
  private val connectionChecker: ConnectionChecker
-): ViewModel() {
+): BaseViewModel<PhotoUi>(photosListCommunication,photosStateCommunication) {
 
  init {
      loadNewPage()
  }
 
  fun loadNewPage() = viewModelScope.launch(dispatchersList.io()) {
-   photosStateCommunication.map(PagingLoadStateState.Loading)
+   photosStateCommunication.map(PagingLoadState.Loading)
    interactor.loadData().map(mapper)
  }
 
@@ -71,14 +70,6 @@ class PhotosViewModel @Inject constructor(
   }else success.invoke()
  }
 
- suspend fun collectPhotosListCommunication(
-  lifecycleOwner: LifecycleOwner,
-  flowCollector: FlowCollector<List<PhotoUi>>
- ) = photosListCommunication.collect(lifecycleOwner,flowCollector)
 
- suspend fun collectPhotosStateCommunication(
-  lifecycleOwner: LifecycleOwner,
-  flowCollector: FlowCollector<PagingLoadStateState>
- ) = photosStateCommunication.collect(lifecycleOwner,flowCollector)
 
 }

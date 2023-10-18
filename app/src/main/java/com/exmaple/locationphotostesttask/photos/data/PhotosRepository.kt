@@ -1,13 +1,9 @@
 package com.exmaple.locationphotostesttask.photos.data
 
-import com.exmaple.locationphotostesttask.authentication.data.cache.TokenStore
 import com.exmaple.locationphotostesttask.core.PagingSource
 import com.exmaple.locationphotostesttask.photos.data.cache.PhotoCache
 import com.exmaple.locationphotostesttask.photos.data.cache.PhotosDao
 import com.exmaple.locationphotostesttask.photos.data.cloud.CloudPhotosDataSource
-import com.exmaple.locationphotostesttask.photos.data.cloud.ImageDtoIn
-import com.exmaple.locationphotostesttask.photos.data.cloud.PhotosService
-import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 /**
@@ -40,9 +36,7 @@ interface PhotosRepository {
       )
 
      override suspend fun postPhoto(photoBase64: String, location: Pair<Double, Double>):List<PhotoCache> {
-        val response = service.postPhoto(
-             ImageDtoIn(photoBase64, System.currentTimeMillis()/1000, location.first, location.second)
-         )
+        val response = service.postPhoto(photoBase64, location)
          photosDao.insertPhoto(response.mapToCache())
          return pagingSource.reloadPages { offset, pageSize -> photosDao.fetchPhotos(offset, pageSize) }
      }

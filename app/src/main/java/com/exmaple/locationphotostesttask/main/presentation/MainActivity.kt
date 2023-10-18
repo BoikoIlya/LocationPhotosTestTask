@@ -4,6 +4,8 @@ import android.content.pm.PackageManager
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
@@ -15,7 +17,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.exmaple.locationphotostesttask.R
 import com.exmaple.locationphotostesttask.core.GlobalSingleUiEventState
 import com.exmaple.locationphotostesttask.databinding.ActivityMainBinding
-import com.exmaple.locationphotostesttask.photos.presentation.PhotosFragment.Companion.REQUEST_CODE
+import com.exmaple.locationphotostesttask.photos.presentation.PhotosFragment.Companion.request_code
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -76,7 +78,7 @@ class MainActivity : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if(
-            requestCode==REQUEST_CODE &&
+            requestCode==request_code &&
             grantResults.isNotEmpty() &&
             grantResults.first() == PackageManager.PERMISSION_DENIED
             )
@@ -84,5 +86,15 @@ class MainActivity : AppCompatActivity() {
                 GlobalSingleUiEventState.ShowDialog(LocationPermissionDialog()))
 
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.action_bar_menu,menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId == R.id.logoutMenuItem) viewModel.logout()
+        return super.onOptionsItemSelected(item)
     }
 }

@@ -7,8 +7,8 @@ import javax.inject.Inject
  * Created by Ilya Boiko @camancho
 on 14.10.2023.
  **/
-interface PhotosLoadStateCommunication: Communication.Mutable<PagingLoadStateState> {
+interface PhotosLoadStateCommunication: Communication.Mutable<PagingLoadState> {
 
     class Base @Inject constructor(): PhotosLoadStateCommunication,
-        Communication.UiUpdate<PagingLoadStateState>(PagingLoadStateState.Empty)
+        Communication.UiUpdate<PagingLoadState>(PagingLoadState.Empty)
 }

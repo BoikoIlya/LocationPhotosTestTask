@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.provider.Settings
 import androidx.fragment.app.DialogFragment
 import com.exmaple.locationphotostesttask.R
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.dialog.MaterialDialogs
 
 
@@ -30,7 +31,7 @@ class LocationPermissionDialog: DialogFragment(){
                 requireContext().startActivity(intent)
             }
         }
-        return AlertDialog.Builder(requireContext())
+        return MaterialAlertDialogBuilder(requireContext())
             .setMessage(R.string.location_perm_dialog)
             .setPositiveButton(R.string.open_settings, listener)
             .setNegativeButton(R.string.close, listener)

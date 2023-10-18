@@ -14,7 +14,7 @@ on 13.10.2023.
  **/
 class PhotosAdapter(
     private val imageLoader: ImageLoader,
-    private val onClick:(PhotoUi)->Unit,
+    private val onClick:(Int)->Unit,
     private val onLongClick:(Int)->Unit,
 ): RecyclerView.Adapter<PhotosViewHolder>() {
 
@@ -49,15 +49,14 @@ class PhotosAdapter(
 class PhotosViewHolder(
     private val binding: PhotoItemBinding,
     private val imageLoader: ImageLoader,
-    private val onClick:(PhotoUi)->Unit,
+    private val onClick:(Int)->Unit,
     private val onLongClick:(Int)->Unit,
 ): ViewHolder(binding.root){
 
-    val mapper = PhotoUi.ShowInRecycler(binding, imageLoader,onLongClick)
+    val mapper = PhotoUi.ShowInRecycler(binding, imageLoader,onLongClick,onClick)
 
     fun bind(item: PhotoUi) {
         item.map(mapper)
-        binding.root.setOnClickListener { onClick.invoke(item) }
     }
 }
 

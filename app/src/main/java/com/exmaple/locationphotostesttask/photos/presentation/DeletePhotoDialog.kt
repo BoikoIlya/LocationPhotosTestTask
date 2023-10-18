@@ -7,6 +7,7 @@ import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.exmaple.locationphotostesttask.R
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -25,8 +26,8 @@ class DeletePhotoDialog: DialogFragment() {
     viewModel.deletePhoto(requireArguments().getInt(ARG_KEY))
   }
 
-  return AlertDialog.Builder(requireContext())
-   .setMessage(R.string.delete_dialog)
+  return MaterialAlertDialogBuilder(requireContext())
+   .setMessage(R.string.delete_photo_dialog)
    .setPositiveButton(R.string.yes, listener)
    .setNegativeButton(R.string.no, listener)
    .create()

@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import com.exmaple.locationphotostesttask.R
 import com.exmaple.locationphotostesttask.photos.presentation.EnableGpsAndRetryFragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 /**
  * Created by Ilya Boiko @camancho
@@ -30,7 +31,7 @@ class GlobalLoadingDialogFragment: DialogFragment() {
         progressBar.indeterminateDrawable.colorFilter = colorFilter
 
 
-        val alertDialog = AlertDialog.Builder(requireContext())
+        val alertDialog = MaterialAlertDialogBuilder(requireContext())
             .setView(progressBar)
             .setMessage(R.string.posting)
             .create()

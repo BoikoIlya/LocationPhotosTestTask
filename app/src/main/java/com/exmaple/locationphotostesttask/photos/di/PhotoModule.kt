@@ -15,9 +15,11 @@ import com.exmaple.locationphotostesttask.photos.data.cloud.CloudPhotosDataSourc
 import com.exmaple.locationphotostesttask.photos.data.cloud.PhotosService
 import com.exmaple.locationphotostesttask.photos.domain.BitmapRotator
 import com.exmaple.locationphotostesttask.photos.domain.LocationProvider
+import com.exmaple.locationphotostesttask.photos.domain.PhotoDomain
 import com.exmaple.locationphotostesttask.photos.domain.PhotoDomainState
 import com.exmaple.locationphotostesttask.photos.domain.PhotosInteractor
 import com.exmaple.locationphotostesttask.photos.domain.UriToBase64Parser
+import com.exmaple.locationphotostesttask.photos.presentation.PhotoUi
 import com.exmaple.locationphotostesttask.photos.presentation.PhotosListCommunication
 import com.exmaple.locationphotostesttask.photos.presentation.PhotosLoadStateCommunication
 import com.exmaple.locationphotostesttask.photos.presentation.PhotosToUiMapper
@@ -87,6 +89,10 @@ interface PhotoModule {
  @Binds
  @ViewModelScoped
  fun bindConnectionChecker(obj: ConnectionChecker.Base): ConnectionChecker
+
+ @Binds
+ @ViewModelScoped
+ fun bindToPhotoUiMapper(obj: PhotoDomain.ToPhotoUiMapper): PhotoDomain.Mapper<PhotoUi>
 }
 
 @Module
