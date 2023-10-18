@@ -77,25 +77,21 @@ class PhotoDetailsFragment : Fragment(R.layout.photo_details_fragment) {
         val commentsAdapter = CommentsAdapter { commentId ->
             deletingCommentId = commentId
             deleteDialog.show()
-           // viewModel.launchDeleteCommentDialog(photoId, commentId)
         }
 
         val loadStateAdapter = LoadStateAdapter {
             viewModel.fetchComments(args.photoId)
         }
 
-        val concatAdapter = ConcatAdapter(loadStateAdapter, commentsAdapter)
+        val concatAdapter = ConcatAdapter(commentsAdapter,loadStateAdapter)
 
-        val layoutManager = LinearLayoutManager(requireContext()).apply {
-            stackFromEnd = true
-            reverseLayout = false
-        }
+        val layoutManager = LinearLayoutManager(requireContext())
 
         binding.commentsRecycler.layoutManager = layoutManager
         binding.commentsRecycler.adapter = concatAdapter
 
         val pagingListener =
-            PagingListener.PagingListenerComments(PagingSource.CommentsPagingSource.pageSize, 0) {
+            PagingListener.Base(PagingSource.CommentsPagingSource.pageSize, 0) {
                 viewModel.fetchComments(args.photoId)
             }
 

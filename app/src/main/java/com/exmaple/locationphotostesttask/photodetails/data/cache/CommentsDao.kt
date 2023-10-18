@@ -26,7 +26,7 @@ interface CommentsDao {
 
  @Query("SELECT * FROM comments_table " +
          "WHERE photoId = :photoId " +
-         "ORDER BY date DESC " +
+         "ORDER BY date ASC " +
          "LIMIT :limit OFFSET :offset")
  suspend fun fetchComments(offset:Int,limit: Int,photoId: Int): List<CommentCache>
 }

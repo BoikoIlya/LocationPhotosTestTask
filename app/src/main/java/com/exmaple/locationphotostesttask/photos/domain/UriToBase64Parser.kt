@@ -35,13 +35,10 @@ interface UriToBase64Parser {
    val contentResolver: ContentResolver = context.contentResolver
    val inputStream: InputStream? = contentResolver.openInputStream(uri)
 
-   // Decode the image and resize it to the target dimensions
    val options = BitmapFactory.Options()
    options.inJustDecodeBounds = true
    BitmapFactory.decodeStream(inputStream, null, options)
    inputStream?.close()
-
-   // Calculate the inSampleSize to resize the image while maintaining the aspect ratio
 
    val width = options.outWidth
    val height = options.outHeight
@@ -59,13 +56,11 @@ interface UriToBase64Parser {
 
    options.inSampleSize = inSampleSize
 
-   // Decode the image with the calculated inSampleSize
    options.inJustDecodeBounds = false
    val scaledBitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(uri), null, options)
 
    val rotatedBitmap = bitmapRotator.rotateBitmap(scaledBitmap,uri)
 
-   // Convert the scaled bitmap to a byte array
    val outputStream = ByteArrayOutputStream()
    rotatedBitmap?.compress(Bitmap.CompressFormat.JPEG, 80, outputStream)
 

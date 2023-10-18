@@ -89,29 +89,6 @@ interface PagingSource<T> {
             const val pageSize = 20
         }
 
-
-        override fun addToTotalList(newPage: List<CommentCache>) {
-            val newList = emptyList<CommentCache>().toMutableList()
-            newList.addAll(newPage.reversed())
-            newList.addAll(totalList)
-            totalList.clear()
-            totalList.addAll(newList)
-        }
-
-        override suspend fun reloadPages(cache: suspend (Int, Int) -> List<CommentCache>): List<CommentCache> {
-            val pageSize = this.pageSize * this.offset
-            val cacheResult = cache.invoke(
-                0,
-                if(offset==0) pageSize+this.pageSize else pageSize)
-
-            totalList.clear()
-            totalList.addAll(cacheResult.reversed())
-
-            val newTotalList = emptyList<CommentCache>().toMutableList()
-            newTotalList.addAll(totalList)
-
-            return newTotalList
-        }
     }
 
 }
